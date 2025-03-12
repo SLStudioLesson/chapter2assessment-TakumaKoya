@@ -65,8 +65,7 @@ public class RecipeUI {
      * RecipeFileHandlerから読み込んだレシピデータを整形してコンソールに表示します。
      */
     private void displayRecipes() {
-        RecipeFileHandler handler = new RecipeFileHandler();
-        ArrayList<String> recipeData = handler.readRecipes();
+        ArrayList<String> recipeData = fileHandler.readRecipes();
 
         if ("No recipes available.".equals(recipeData.get(0))) {
             System.out.print(recipeData.get(0));
@@ -99,17 +98,22 @@ public class RecipeUI {
      *
      * @throws java.io.IOException 入出力が受け付けられない
      */
-    private void addNewRecipe() throws IOException {
+    private void addNewRecipe() {
         RecipeFileHandler handler = new RecipeFileHandler();
 
         // 入力受付
-        System.out.print("Enter recipe name: ");
-        String recipeName = reader.readLine();
-        System.out.print("Enter main ingredients (comma separated): ");
-        String ingredients = reader.readLine();
+        try {
+            System.out.print("Enter recipe name: ");
+            String recipeName = reader.readLine();
+            System.out.print("Enter main ingredients (comma separated): ");
+            String ingredients = reader.readLine();
+    
+            // RecipeFileHandlerのaddRecipeメソッド実行
+            handler.addRecipe(recipeName, ingredients);
 
-        // RecipeFileHandlerのaddRecipeメソッド実行
-        handler.addRecipe(recipeName, ingredients);
+        } catch (IOException e) {
+            System.out.println("Error reading file:" + e.getMessage());
+        }
 
     }
 

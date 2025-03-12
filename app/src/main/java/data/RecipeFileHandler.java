@@ -88,7 +88,7 @@ public class RecipeFileHandler {
             writer.write(recipeName + "," + ingredients);
             
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error reading file:" + e.getMessage());
         }
         
     }
