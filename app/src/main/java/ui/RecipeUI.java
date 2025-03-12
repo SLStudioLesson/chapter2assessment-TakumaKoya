@@ -36,12 +36,13 @@ public class RecipeUI {
 
                 switch (choice) {
                     case "1":
-                    // 設問1: 一覧表示機能
-                    displayRecipes();
-                        
+                        // 設問1: 一覧表示機能
+                        displayRecipes();
+
                         break;
                     case "2":
                         // 設問2: 新規登録機能
+                        addNewRecipe();
                         break;
                     case "3":
                         // 設問3: 検索機能
@@ -67,15 +68,30 @@ public class RecipeUI {
         RecipeFileHandler handler = new RecipeFileHandler();
         ArrayList<String> recipeData = handler.readRecipes();
 
-        //一行ずつ出力
-        for (String line : recipeData) {
-            String[] element = line.split(",");
-                
+        if ("No recipes available.".equals(recipeData.get(0))) {
+            System.out.print(recipeData.get(0));
+        } else {
+            System.out.println("\nRecipes:");
+            System.out.println("-----------------------------------");
 
-            
+            // 一行ずつ出力
+            for (String line : recipeData) {
+                String[] element = line.split(",");
+                for (int i = 0; i < element.length; i++) {
+                    if (i == 0) {
+                        System.out.println("Recipe Name:" + element[i]);
+                    } else if (i == 1) {
+                        System.out.print("Main Ingredients:" + element[i]);
+                    } else {
+                        System.out.print("," + element[i]);
+                    }
+                }
+                System.out.print("\n"); // 改行
+                System.out.println("-----------------------------------");
+            }
+
         }
     }
-       
 
     /**
      * 設問2: 新規登録機能
@@ -84,6 +100,16 @@ public class RecipeUI {
      * @throws java.io.IOException 入出力が受け付けられない
      */
     private void addNewRecipe() throws IOException {
+        RecipeFileHandler handler = new RecipeFileHandler();
+
+        // 入力受付
+        System.out.print("Enter recipe name: ");
+        String recipeName = reader.readLine();
+        System.out.print("Enter main ingredients (comma separated): ");
+        String ingredients = reader.readLine();
+
+        // RecipeFileHandlerのaddRecipeメソッド実行
+        handler.addRecipe(recipeName, ingredients);
 
     }
 
@@ -98,4 +124,3 @@ public class RecipeUI {
     }
 
 }
-
